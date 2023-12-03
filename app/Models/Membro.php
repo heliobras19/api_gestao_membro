@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Models;
+
+use App\Models\Localizacao\Comite;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Membro extends Model
+{
+
+
+    use HasFactory;
+    protected $fillable = ['nome', 'email', 'telefone', 'sexo', 'data_nascimento', 'municipio','comuna_id',
+        'comuna', 'provincia', 'bi', 'pai', 'mae', 'mae', 'ano_ingresso', 'onde_ingressou', 'numero_membro',
+        'cartao_municipe', 'comite_id'];
+
+    public function orgaos() {
+        return $this->belongsToMany(Orgao::class,
+            'membro_orgaos',
+            'membro_id',
+            'orgao_id'
+        );
+    }
+
+    public function nucleo () {
+        return $this->belongsTo(Comite::class, 'comite_id');
+    }
+
+
+}
