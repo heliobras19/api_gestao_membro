@@ -37,4 +37,8 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::get("teste", [\App\Http\Controllers\MembroController::class, 'teste']);
 });
 
+Route::get("/ola", function () {
+    return "get em api testado";
+});
+
 Route::post('register', [\App\Http\Controllers\AuthController::class, 'register']);

@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return "alguma coisa esta errada";
 });
+
+Route::post("/ola", function () {
+    return "Post testado";
+});
