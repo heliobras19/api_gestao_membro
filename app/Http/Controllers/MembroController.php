@@ -16,15 +16,18 @@ class MembroController extends Controller
         $this->middleware('auth:api');
     }
     public function index(Request $request) {
-        $comiteId = $request->get('comite_id');
+        if ($request->has('comite_id') && !empty($request->comite_id)){
+            $comiteId = $request->get('comite_id');
 
-        $comite = Comite::find($comiteId);
+            $comite = Comite::find($comiteId);
 
-        if ($comite) {
-            $membrosDoNucleo = $comite->membrosDoNucleo($comiteId);
-            return response()->json(APIResponse::response($membrosDoNucleo, true));
+            if ($comite) {
+                $membrosDoNucleo = $comite->membrosDoNucleo($comiteId);
+                return response()->json(APIResponse::response($membrosDoNucleo, true));
+            }
+            return response()->json(['message' => 'Comitê não encontrado'], 404);
         }
-        return response()->json(['message' => 'Comitê não encontrado'], 404);
+        return Membro::with('nucleo', 'orgaos')->get();
     }
 
     private function rules()
@@ -73,7 +76,7 @@ class MembroController extends Controller
             $membro = Membro::find($id);
             $membro->update($request->all());
             return response()->json(APIResponse::response($membro));
-        }catch (\Exception $exception){
+        } catch (\Exception $exception){
             return response()->json(APIResponse::response($exception->getMessage(), false), 500);
         }
     }

@@ -17,6 +17,6 @@ Route::get('/', function () {
     return "alguma coisa esta errada";
 });
 
-Route::post("/ola", function () {
+Route::get("/ola", function () {
     return "Post testado";
 });
