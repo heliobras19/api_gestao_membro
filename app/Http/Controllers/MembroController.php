@@ -50,7 +50,8 @@ class MembroController extends Controller
             'numero_membro' => 'nullable|string',
             'cartao_municipe' => 'nullable|string',
             'comite_id' => 'required|exists:comites,id',
-            'orgaos' => 'nullable|array'
+            'orgaos' => 'nullable|array',
+            'funcoes' =>  'nullable|array'
         ];
     }
     public function store (Request $request) {
@@ -58,6 +59,7 @@ class MembroController extends Controller
             $data = $request->all();
             $membro = Membro::create($data);
             $membro->orgaos()->sync($request->get('orgaos'));
+            $membro->funcao()->sync($request->get('funcoes'));
             return response()->json(APIResponse::response($membro, true));
         } catch (\Exception $exception){
             return response()->json(APIResponse::response($exception->getMessage(), false), 500);

@@ -23,6 +23,14 @@ class Membro extends Model
         );
     }
 
+    public function funcoes () {
+        return $this->belongsToMany(Funcao::class,
+            'funcao_membros',
+            'membro_id',
+            'funcao_id'
+        );
+    }
+
     public function nucleo () {
         return $this->belongsTo(Comite::class, 'comite_id');
     }
