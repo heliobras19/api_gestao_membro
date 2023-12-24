@@ -13,7 +13,7 @@ class Membro extends Model
     use HasFactory;
     protected $fillable = ['nome', 'email', 'telefone', 'sexo', 'data_nascimento', 'municipio','comuna_id',
         'comuna', 'provincia', 'bi', 'pai', 'mae', 'mae', 'ano_ingresso', 'onde_ingressou', 'numero_membro',
-        'cartao_municipe', 'comite_id'];
+        'cartao_municipe', 'comite_id', 'estrutura', 'foi_militar'];
 
     public function orgaos() {
         return $this->belongsToMany(Orgao::class,

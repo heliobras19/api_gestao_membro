@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Localizacao\Bairro;
 use App\Models\Localizacao\Provincia;
+use App\Services\APIResponse;
 use Illuminate\Http\Request;
 
 class PaisController extends Controller
@@ -13,5 +15,11 @@ class PaisController extends Controller
             return $provincia;
         }
         return Provincia::with('municipios.comunas.bairros.comites')->get();
+    }
+
+    public function bairros (){
+        return response()->json(
+            APIResponse::response(Bairro::all())
+        );
     }
 }
