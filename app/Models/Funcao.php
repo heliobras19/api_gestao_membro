@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Funcao extends Model
 {
-    protected $fillable = ['nome_funcao', 'tipo']
+    protected $fillable = ['nome_funcao', 'tipo'];
     use HasFactory;
 }
