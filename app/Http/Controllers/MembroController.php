@@ -33,6 +33,8 @@ class MembroController extends Controller
     private function rules()
     {
         return [
+            'estrutura' => 'nullable|string|max:50',
+            'foi_militar' => 'nullable',
             'nome' => 'required|string|max:50',
             'email' => 'nullable|email|max:50',
             'telefone' => 'required|string|max:15',

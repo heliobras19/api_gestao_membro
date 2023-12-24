@@ -34,6 +34,7 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::resource('orgao', \App\Http\Controllers\OrgaosController::class);
     Route::resource('comite', \App\Http\Controllers\ComiteController::class);
     Route::get('pais', [\App\Http\Controllers\PaisController::class, 'pais']);
+    Route::resource('funcao', \App\Http\Controllers\FuncaoController::class)->except(['create', 'edit']);
     Route::get("teste", [\App\Http\Controllers\MembroController::class, 'teste']);
 });
 

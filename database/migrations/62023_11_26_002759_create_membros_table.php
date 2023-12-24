@@ -29,7 +29,6 @@ class CreateMembrosTable extends Migration
             $table->string('onde_ingressou')->nullable();
             $table->string('numero_membro')->nullable();
             $table->string('cartao_municipe')->nullable();
-            $table->string('estrutura', 20);
             $table->foreignUuid('comite_id')->references('id')->on('comites');
             $table->timestamps();
         });
