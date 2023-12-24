@@ -59,7 +59,7 @@ class MembroController extends Controller
             $data = $request->all();
             $membro = Membro::create($data);
             $membro->orgaos()->sync($request->get('orgaos'));
-            $membro->funcao()->sync($request->get('funcoes'));
+            $membro->funcoes()->sync($request->get('funcoes'));
             return response()->json(APIResponse::response($membro, true));
         } catch (\Exception $exception){
             return response()->json(APIResponse::response($exception->getMessage(), false), 500);
