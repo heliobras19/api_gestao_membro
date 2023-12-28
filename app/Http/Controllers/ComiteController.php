@@ -9,12 +9,21 @@ use Illuminate\Http\Request;
 
 class ComiteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     public function index (Request $request) {
             if ($request->has('comite_id')){
                 $comite = Comite::with('filhos')->where('id', $request->comite_id);
                 return response()->json(APIResponse::response($comite));
             }
             return response()->json(APIResponse::response(Comite::all()));
+    }
+
+    public function byBairros (Request $request) {
+        $comites = Comite::query()->where('bairro_id', $request->get('bairro_id'))->get();
+        return response()->json(APIResponse::response($comites));
     }
 
     public function create (){

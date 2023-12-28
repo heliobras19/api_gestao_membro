@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class OrgaosController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     public function index()
     {
         $orgaos = Orgao::all();
