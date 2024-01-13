@@ -14,8 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return "alguma coisa esta errada";
+    return "API FOR DATA SEND";
 });
+
+Route::get('excel',  [\App\Http\Controllers\PaisController::class, 'importarDadosView']);
+Route::post('importar', [\App\Http\Controllers\PaisController::class, 'importarDados']);
 
 Route::get("/ola", function () {
     return "Post testado";

@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Localizacao\Bairro;
+use App\Models\Localizacao\Comuna;
+use App\Models\Localizacao\Municipio;
 use App\Models\Localizacao\Provincia;
 use App\Services\APIResponse;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 class PaisController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware('auth:api')->except(['importarDadosView', 'importarDados']);
     }
 
     public function pais (Request $request) {
@@ -27,4 +30,53 @@ class PaisController extends Controller
             APIResponse::response(Bairro::all())
         );
     }
+
+    public function importarDadosView() {
+        return view('importar');
+    }
+
+    public function importarDados(Request $request) {
+        $path = storage_path() . '/app/' . $request->file('input_file')->store('temp');
+        $reader = new Xlsx();
+        $excel = $reader->load($path);
+        $sheet = $excel->getActiveSheet();
+        $info = $reader->listWorksheetInfo($path);
+        $totalRows = $info[0]['totalRows'];
+        $provincia_nome = $sheet->getCell('A2')->getValue();
+        $provincia = Provincia::create([
+            'nome_provincia' => $provincia_nome
+        ]);
+
+        $municipios = [];
+
+        for ($row = 2; $row <= $totalRows; $row++) {
+            $municipio_nome = $sheet->getCell("B{$row}")->getValue();
+            $comuna_nome = $sheet->getCell("C{$row}")->getValue();
+            $bairro_nome = $sheet->getCell("E{$row}")->getValue();
+
+            // Verifica se o município já existe
+            $municipio = Municipio::firstOrNew(['nome_municipio' => $municipio_nome]);
+
+            // Se o município não existir, cria um novo
+            if (!$municipio->exists) {
+                $provincia->municipios()->save($municipio);
+            }
+
+            // Verifica se a comuna já existe no município atual
+            $comuna = $municipio->comunas()->firstOrNew(['nome_comuna' => $comuna_nome]);
+
+            // Se a comuna não existir, cria uma nova
+            if (!$comuna->exists) {
+                $municipio->comunas()->save($comuna);
+            }
+
+            // Cria o bairro na comuna atual
+            $comuna->bairros()->create([
+                'nome_bairro' => $bairro_nome
+            ]);
+        }
+
+        return view('successo', compact('provincia_nome'));
+    }
+
 }
