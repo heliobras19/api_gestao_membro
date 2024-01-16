@@ -42,7 +42,7 @@ Route::group(['middleware' => 'api'], function ($router) {
 });
 
 Route::get("/ola", function () {
-    return "get em api testado";
+   return auth()->user();
 });
 
 Route::post('register', [\App\Http\Controllers\AuthController::class, 'register']);
