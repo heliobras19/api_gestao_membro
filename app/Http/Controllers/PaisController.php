@@ -43,8 +43,8 @@ class PaisController extends Controller
         $info = $reader->listWorksheetInfo($path);
         $totalRows = $info[0]['totalRows'];
         $provincia_nome = $sheet->getCell('A2')->getValue();
-        $check = Provincia::where('nome_provincia', $provincia_nome);
-        if ($check) {
+        $check = Provincia::where('nome_provincia', $provincia_nome)->get();
+        if (count($check) > 0) {
             echo "Provincia {$provincia_nome} ja foi importada, <a href='/excel'>importar outra</a>";
             return;
         }
