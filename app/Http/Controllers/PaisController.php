@@ -80,7 +80,7 @@ class PaisController extends Controller
                 'nome_bairro' => $bairro_nome
             ]);
         }
-        echo "Provincia {$provincia_nome} ja foi importada, <a href='/excel'>importar outra</a>";
+        echo "Provincia {$provincia_nome} importada com sucesso !!!, <a href='/excel'>importar outra</a>";
         return;
     }
 
