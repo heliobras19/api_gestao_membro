@@ -46,7 +46,7 @@ class PaisController extends Controller
         $check = Provincia::where('nome_provincia', $provincia_nome);
         if ($check) {
             echo "Provincia {$provincia_nome} ja foi importada, <a href='/excel'>importar outra</a>";
-            return "provincia ja importada";
+            return;
         }
         $provincia = Provincia::create([
             'nome_provincia' => $provincia_nome
@@ -80,8 +80,8 @@ class PaisController extends Controller
                 'nome_bairro' => $bairro_nome
             ]);
         }
-
-        return view('successo', compact('provincia_nome'));
+        echo "Provincia {$provincia_nome} ja foi importada, <a href='/excel'>importar outra</a>";
+        return;
     }
 
 }
