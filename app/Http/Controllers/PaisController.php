@@ -75,13 +75,13 @@ class PaisController extends Controller
                 $municipio->comunas()->save($comuna);
             }
 
-            // Cria o bairro na comuna atual
-            $comuna->bairros()->create([
-                'nome_bairro' => $bairro_nome
-            ]);
+            $bairro = $comuna->bairros()->firstOrNew(['nome_bairro' => $bairro_nome]);
+
+            if (!$bairro->exists) {
+                $comuna->bairros()->save($bairro);
+            }
         }
         echo "Provincia {$provincia_nome} importada com sucesso !!!, <a href='/excel'>importar outra</a>";
         return;
     }
-
 }
