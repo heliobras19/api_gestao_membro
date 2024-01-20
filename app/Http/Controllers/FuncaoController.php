@@ -17,6 +17,10 @@ class FuncaoController extends Controller
         return response()->json(APIResponse::response([Funcao::all()]));
     }
 
+    public function show (Funcao $funcao) {
+        return response()->json($funcao);
+    }
+
 
     public function update (Request $request, Funcao $funcao){
         try {

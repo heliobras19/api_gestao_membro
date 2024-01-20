@@ -26,6 +26,10 @@ class ComiteController extends Controller
         return response()->json(APIResponse::response($comites));
     }
 
+    public function show(Comite $comite) {
+        return response()->json($comite);
+    }
+
     public function create (){
         $bairros = Bairro::all();
         $comites = Comite::where('tipo', '!=', 4)->get();

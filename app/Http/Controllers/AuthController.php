@@ -39,13 +39,15 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
-            'scope' => 'required'
+            'scope' => 'required',
+            'abrangencia' => 'nullable'
         ]);
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'scope' => $request->scope
+            'scope' => $request->scope,
+            'abrangencia' => $request->abrangencia ?? 'municipal'
         ]);
         return response()->json($user);
     }
