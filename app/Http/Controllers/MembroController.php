@@ -66,6 +66,10 @@ class MembroController extends Controller
         }
     }
 
+    public function show (Membro $membro) {
+        return response()->json($membro);
+    }
+
     public function teste () {
      // $membro = Membro::with(['orgaos', 'nucleo'])->find(1);
        // return response()->json(APIResponse::response($membro, true));

@@ -32,7 +32,7 @@ Route::group([
 Route::group(['middleware' => 'api'], function ($router) {
     Route::resource('membro', \App\Http\Controllers\MembroController::class);
     Route::resource('orgao', \App\Http\Controllers\OrgaosController::class);
-    Route::resource('comite', \App\Http\Controllers\ComiteController::class)->except('show');
+    Route::resource('comite', \App\Http\Controllers\ComiteController::class);
     Route::get('pais', [\App\Http\Controllers\PaisController::class, 'pais']);
 
     Route::get('bairros', [\App\Http\Controllers\PaisController::class, 'bairros']);

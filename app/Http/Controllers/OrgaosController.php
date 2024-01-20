@@ -31,6 +31,10 @@ class OrgaosController extends Controller
         return response()->json(APIResponse::response($orgao), 201);
     }
 
+    public function show(Orgao $orgao) {
+        return response()->json($orgao);
+    }
+
     // Atualiza um orgão existente
     public function update(Request $request, Orgao $orgao)
     {
