@@ -61,7 +61,7 @@ class MembroController extends Controller
             $membro->orgaos()->sync($request->get('orgaos'));
             $membro->funcoes()->sync($request->get('funcoes'));
             return response()->json(APIResponse::response($membro, true));
-        } catch (\Exception $exception){
+        } catch (\Exception $exception) {
             return response()->json(APIResponse::response($exception->getMessage(), false), 500);
         }
     }
@@ -84,7 +84,7 @@ class MembroController extends Controller
             $membro = Membro::find($id);
             $membro->update($request->all());
             return response()->json(APIResponse::response($membro));
-        } catch (\Exception $exception){
+        } catch (\Exception $exception) {
             return response()->json(APIResponse::response($exception->getMessage(), false), 500);
         }
     }
