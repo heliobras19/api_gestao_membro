@@ -33,12 +33,12 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::resource('membro', \App\Http\Controllers\MembroController::class);
     Route::resource('orgao', \App\Http\Controllers\OrgaosController::class);
     Route::resource('comite', \App\Http\Controllers\ComiteController::class);
+    Route::get('loc',  [\App\Http\Controllers\ComiteController::class, 'ola']);
     Route::get('pais', [\App\Http\Controllers\PaisController::class, 'pais']);
 
     Route::get('bairros', [\App\Http\Controllers\PaisController::class, 'bairros']);
-    Route::get('comite/byBairros', [\App\Http\Controllers\ComiteController::class, 'byBairros']);
     Route::resource('funcao', \App\Http\Controllers\FuncaoController::class)->except(['create', 'edit']);
-    Route::get("teste", [\App\Http\Controllers\MembroController::class, 'teste']);
+    Route::get("comite_by_bairros", [\App\Http\Controllers\ComiteController::class, 'byBairros']);
 });
 
 Route::get("/ola", function () {

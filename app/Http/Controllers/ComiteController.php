@@ -26,6 +26,10 @@ class ComiteController extends Controller
         return response()->json(APIResponse::response($comites));
     }
 
+    public function ola () {
+        return "teste";
+    }
+
     public function show(Comite $comite) {
         return response()->json($comite);
     }
