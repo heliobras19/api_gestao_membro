@@ -8,5 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Funcao extends Model
 {
     protected $fillable = ['nome_funcao', 'tipo'];
+    protected $appends = ['desc_tipo'];
+
+    public function getDescTipoAttribute() {
+        $tipo = [
+            1 => "Deliberativa",
+            "Executiva"
+        ];
+        return $tipo[$this->tipo];
+    }
     use HasFactory;
 }
