@@ -67,7 +67,7 @@ class MembroController extends Controller
     }
 
     public function show (Membro $membro) {
-        return response()->json($membro);
+        return response()->json($membro->with('nucleo', 'funcoes', 'orgaos'));
     }
 
     public function teste () {
