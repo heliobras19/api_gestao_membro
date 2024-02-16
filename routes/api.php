@@ -28,6 +28,7 @@ Route::group([
     Route::post('me', [\App\Http\Controllers\AuthController::class, 'me']);
     Route::put('update/{user}', [\App\Http\Controllers\AuthController::class, 'updateUser']);
     Route::put('desativar/{user}', [\App\Http\Controllers\AuthController::class, 'destaivarConta']);
+    Route::get('users', [\App\Http\Controllers\AuthController::class, 'listUser']);
 });
 
 
