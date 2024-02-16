@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCollumnsIntoMembers extends Migration
+class AddCollumnIntoUser extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class AddCollumnsIntoMembers extends Migration
      */
     public function up()
     {
+        Schema::table('users', function (Blueprint $table) {
+           $table->boolean('ativo')->default(true);
+           $table->boolean('admin')->default(false);
+        });
+
         Schema::table('membros', function (Blueprint $table) {
-            $table->string('estrutura', 50)->default('partido');
-            $table->boolean('foi_militar')->default(false);
             $table->string('habilitacao')->nullable();
         });
     }
@@ -27,8 +30,6 @@ class AddCollumnsIntoMembers extends Migration
      */
     public function down()
     {
-        Schema::table('membros', function (Blueprint $table) {
-            $table->dropColumn(["estrutura", "foi_militar"]);
-        });
+        //
     }
 }

@@ -15,6 +15,9 @@ class CreateLiuguasTable extends Migration
     {
         Schema::create('liuguas', function (Blueprint $table) {
             $table->id();
+            $table->string("lingua")->nullable();
+            $table->enum("tipo", ["lingua", "idioma"])->default("lingua");
+            $table->foreignId('membro_id')->references('id')->on('membros')->cascadeOnDelete();
             $table->timestamps();
         });
     }
