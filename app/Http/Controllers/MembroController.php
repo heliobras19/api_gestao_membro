@@ -60,6 +60,7 @@ class MembroController extends Controller
             $membro = Membro::create($data);
             $membro->orgaos()->sync($request->get('orgaos'));
             $membro->funcoes()->sync($request->get('funcoes'));
+            $membro->linguas()->create($request->get('linguas'));
             return response()->json(APIResponse::response($membro, true));
         } catch (\Exception $exception) {
             return response()->json(APIResponse::response($exception->getMessage(), false), 500);
@@ -83,6 +84,9 @@ class MembroController extends Controller
         try {
             $membro = Membro::find($id);
             $membro->update($request->all());
+            $membro->orgaos()->sync($request->get('orgaos'));
+            $membro->funcoes()->sync($request->get('funcoes'));
+            $membro->linguas()->create($request->get('linguas'));
             return response()->json(APIResponse::response($membro));
         } catch (\Exception $exception) {
             return response()->json(APIResponse::response($exception->getMessage(), false), 500);

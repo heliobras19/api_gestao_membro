@@ -25,6 +25,10 @@ class AuthController extends Controller
      */
     public function login()
     {
+        $user = User::where('email', \request('email'))->get();
+        if (!$user->ativo){
+            return response()->json(["conta temporariamente suspensa"]);
+        }
         $credentials = request(['email', 'password']);
 
         $token = auth()->attempt($credentials);
@@ -47,9 +51,34 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'scope' => $request->scope,
-            'abrangencia' => $request->abrangencia ?? 'municipal'
+            'abrangencia' => $request->abrangencia ?? 'nacional'
         ]);
         return response()->json($user);
+    }
+
+    public function updateUser ($user, Request $request) {
+        $user = User::find($user);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'scope' => $request->scope,
+            'abrangencia' => $request->abrangencia ?? 'nacional'
+        ]);
+    }
+
+    public function destaivarConta (User $user){
+        $user->ativo = false;
+        $user->save();
+        return response()->json(["conta desativada com sucesso"]);
+    }
+
+    public function listUser () {
+        $user = User::query();
+        if (\request()->get('abrangencia')) {
+            $user->where('abrangencia', \request()->get('abrangencia'));
+        }
+        return response()->json($user->get());
     }
 
     /**
