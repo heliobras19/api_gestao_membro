@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -25,20 +26,21 @@ class AuthController extends Controller
      */
     public function login()
     {
-        $user = User::where('email', \request('email'))->get();
-        if (!$user->ativo){
+        $user = User::where('email', \request('email'))->first();
+        if ($user && !$user->ativo) {
             return response()->json(["conta temporariamente suspensa"]);
         }
         $credentials = request(['email', 'password']);
 
         $token = auth()->attempt($credentials);
-        if($token === false){
+        if ($token === false) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         return $this->respondWithToken($token);
     }
 
-    public function register (Request $request) {
+    public function register(Request $request)
+    {
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
@@ -58,24 +60,28 @@ class AuthController extends Controller
         return response()->json($user);
     }
 
-    public function updateUser ($user, Request $request) {
+    public function updateUser($user, Request $request)
+    {
         $user = User::find($user);
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'scope' => $request->scope,
+            'admin' => $request->admin,
             'abrangencia' => $request->abrangencia ?? 'nacional'
         ]);
     }
 
-    public function destaivarConta (User $user){
+    public function destaivarConta(User $user)
+    {
         $user->ativo = false;
         $user->save();
         return response()->json(["conta desativada com sucesso"]);
     }
 
-    public function listUser () {
+    public function listUser()
+    {
         $user = User::query();
         if (\request()->get('abrangencia')) {
             $user->where('abrangencia', \request()->get('abrangencia'));
