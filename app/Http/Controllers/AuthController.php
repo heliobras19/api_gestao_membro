@@ -80,6 +80,13 @@ class AuthController extends Controller
         return response()->json(["conta desativada com sucesso"]);
     }
 
+    public function ativarConta(User $user)
+    {
+        $user->ativo = true;
+        $user->save();
+        return response()->json(["conta ativada com sucesso"]);
+    }
+
     public function listUser()
     {
         $user = User::query();
