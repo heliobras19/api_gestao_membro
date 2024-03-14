@@ -56,11 +56,14 @@ class MembroController extends Controller
     }
     public function store (Request $request) {
         try {
+            if (!$request->scope) {
+                $request->merge(["scope" => auth()->user()->scope]);
+            }
             $data = $request->all();
             $membro = Membro::create($data);
             $membro->orgaos()->sync($request->get('orgaos'));
             $membro->funcoes()->sync($request->get('funcoes'));
-            $membro->linguas()->create($request->get('linguas'));
+            $membro->linguas()->createMany($request->get('linguas'));
             return response()->json(APIResponse::response($membro, true));
         } catch (\Exception $exception) {
             return response()->json(APIResponse::response($exception->getMessage(), false), 500);
