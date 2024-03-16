@@ -63,14 +63,7 @@ class AuthController extends Controller
     public function updateUser($user, Request $request)
     {
         $user = User::find($user);
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'scope' => $request->scope,
-            'admin' => $request->admin,
-            'abrangencia' => $request->abrangencia ?? 'nacional'
-        ]);
+        $user->update($request);
     }
 
     public function destaivarConta(User $user)
@@ -87,8 +80,17 @@ class AuthController extends Controller
         return response()->json(["conta ativada com sucesso"]);
     }
 
+    public function singleUser(User $user){
+        if (auth()->user()->admin) {
+            return response()->json($user);
+        } return response()->json(["A tua conta não tem esse privilegio"]);
+    }
+
     public function listUser()
     {
+        if (!auth()->user()->admin) {
+            return response()->json(["A tua conta não tem esse previlegio"]);
+        }
         $user = User::query();
         if (\request()->get('abrangencia')) {
             $user->where('abrangencia', \request()->get('abrangencia'));
