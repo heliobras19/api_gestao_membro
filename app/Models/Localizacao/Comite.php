@@ -26,6 +26,14 @@ class Comite extends Model
         return $tipo_desc[$this->tipo];
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('verificar_escopo', function ($query) {
+            $user = auth()->user();
+        });
+    }
+
     public function bairro () {
         return $this->belongsTo(Bairro::class, 'bairro_id');
     }

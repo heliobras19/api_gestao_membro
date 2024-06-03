@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Orgao;
 use App\Services\APIResponse;
+use Exception;
 use Illuminate\Http\Request;
 
 class OrgaosController extends Controller
@@ -22,13 +23,19 @@ class OrgaosController extends Controller
     // Armazena um novo orgão
     public function store(Request $request)
     {
-        $request->validate([
-            'nome_orgao' => 'required',
-            'tipo' => 'required|in:1,2,3,4'
-        ]);
+        try {
+            $request->validate([
+                'nome_orgao' => 'required|unique:orgaos',
+                'tipo' => 'required|in:1,2,3,4'
+            ]);
+            $orgao = Orgao::create($request->all());
+            return response()->json(APIResponse::response($orgao), 201);
+        } catch (Exception $th) {
+            return response()->json(["msg" => $th->getMessage(), "success" => false], 500);
+        }
+       
 
-        $orgao = Orgao::create($request->all());
-        return response()->json(APIResponse::response($orgao), 201);
+       
     }
 
     public function show(Orgao $orgao) {

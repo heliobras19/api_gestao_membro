@@ -7,6 +7,7 @@ use App\Models\Localizacao\Comite;
 use App\Models\Membro;
 use App\Services\APIResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MembroController extends Controller
 {
@@ -27,7 +28,7 @@ class MembroController extends Controller
             }
             return response()->json(['message' => 'Comitê não encontrado'], 404);
         }
-        return Membro::with('nucleo', 'orgaos', 'funcoes')->get();
+        return Membro::with('nucleo', 'orgaos', 'funcoes')->paginate(15);
     }
 
     private function rules()
@@ -56,16 +57,16 @@ class MembroController extends Controller
     }
     public function store (Request $request) {
         try {
-            if (!$request->scope) {
-                $request->merge(["scope" => auth()->user()->scope]);
-            }
+            DB::beginTransaction();
             $data = $request->all();
             $membro = Membro::create($data);
             $membro->orgaos()->sync($request->get('orgaos'));
             $membro->funcoes()->sync($request->get('funcoes'));
             $membro->linguas()->createMany($request->get('linguas'));
+            DB::commit();
             return response()->json(APIResponse::response($membro, true));
         } catch (\Exception $exception) {
+            DB::rollBack();
             return response()->json(APIResponse::response($exception->getMessage(), false), 500);
         }
     }

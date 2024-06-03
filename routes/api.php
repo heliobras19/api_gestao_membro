@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,11 +38,11 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::resource('membro', \App\Http\Controllers\MembroController::class);
     Route::resource('orgao', \App\Http\Controllers\OrgaosController::class);
     Route::resource('comite', \App\Http\Controllers\ComiteController::class);
+    Route::resource('funcao', \App\Http\Controllers\FuncaoController::class)->except(['create', 'edit']);
     Route::get('loc',  [\App\Http\Controllers\ComiteController::class, 'ola']);
     Route::get('pais', [\App\Http\Controllers\PaisController::class, 'pais']);
-
+    Route::get('dashboard', [DashboardController::class, 'index']);
     Route::get('bairros', [\App\Http\Controllers\PaisController::class, 'bairros']);
-    Route::resource('funcao', \App\Http\Controllers\FuncaoController::class)->except(['create', 'edit']);
     Route::get("comite_by_bairros", [\App\Http\Controllers\ComiteController::class, 'byBairros']);
 });
 
