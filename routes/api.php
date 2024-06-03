@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +45,7 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::get('dashboard', [DashboardController::class, 'index']);
     Route::get('bairros', [\App\Http\Controllers\PaisController::class, 'bairros']);
     Route::get("comite_by_bairros", [\App\Http\Controllers\ComiteController::class, 'byBairros']);
+    Route::post('update/me/{user}', [AuthController::class, 'updateUser']);
 });
 
 Route::get("/ola", function () {
