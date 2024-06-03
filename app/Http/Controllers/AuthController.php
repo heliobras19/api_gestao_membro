@@ -41,6 +41,9 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        if (!auth()->user()->admin) {
+            return response()->json(["msg" => "voce  não tem autorização para criar contas"], 403);
+        }
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
