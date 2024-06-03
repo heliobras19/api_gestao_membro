@@ -33,6 +33,9 @@ class FuncaoController extends Controller
 
     public function store (Request $request) {
         try {
+            $request->validate([
+                "nome_funcao" => "required|unique:orgaos"
+            ]);
             $funcao = Funcao::create($request->all());
             return response()->json(APIResponse::response($funcao));
         } catch (\Exception $exception) {

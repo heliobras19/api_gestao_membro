@@ -41,6 +41,9 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        if (!auth()->user()->admin) {
+            return response()->json(["msg" => "voce  não tem autorização para criar contas"], 403);
+        }
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
@@ -63,14 +66,14 @@ class AuthController extends Controller
     public function updateUser($user, Request $request)
     {
         $user = User::find($user);
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'scope' => $request->scope,
-            'admin' => $request->admin,
-            'abrangencia' => $request->abrangencia ?? 'nacional'
-        ]);
+        if ($request->password || $request->password != null) {
+            $request->merge([
+                "password" => Hash::make($request->password)
+            ]);
+        } elseif (isset($request->password) && $request->password == null) {
+           $request->replace($request->except('password'));
+        }
+        $user->update($request->all());
     }
 
     public function destaivarConta(User $user)
@@ -104,6 +107,24 @@ class AuthController extends Controller
     public function me()
     {
         return response()->json(auth()->user());
+    }
+
+    public function updateMe(Request $request) {
+        $user = User::find(auth()->user()->id);
+        $data = null;
+        if (isset($request->senha) && $request->senha != null) {
+            if (Hash::make($request->senha) == $user->password) {
+                $data = [
+                    "name" => $request->name,
+                    "email" => $request->email,
+                    "password" => Hash::make($request->new_password)
+                ];
+            } else {
+                return response()->json(["msg" => "senha errada"], 403);
+            }
+        }
+        $user->update($data ?? $request->all());
+        return response()->json([$user]);
     }
 
     /**

@@ -8,11 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class userAdmin extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
+
     public function run()
     {
         User::create([
