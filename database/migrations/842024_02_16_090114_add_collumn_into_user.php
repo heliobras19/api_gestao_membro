@@ -17,10 +17,6 @@ class AddCollumnIntoUser extends Migration
            $table->boolean('ativo')->default(true);
            $table->boolean('admin')->default(false);
         });
-
-        Schema::table('membros', function (Blueprint $table) {
-            $table->string('habilitacao')->nullable();
-        });
     }
 
     /**

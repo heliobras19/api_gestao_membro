@@ -24,7 +24,7 @@ protected static function boot()
 
    static::addGlobalScope('municipio', function ($query) {
         $user = auth()->user();
-        if ($user->abragencia == 'municipal'){
+        if ($user->abragencia == 'municipal' && $user->admin == false){
             $query->where('scope', $user->scope);
         }
    });
