@@ -66,11 +66,14 @@ class AuthController extends Controller
     public function updateUser($user, Request $request)
     {
         $user = User::find($user);
-        if ($request->password || $request->password != null) {
-            $request->merge([
-                "password" => Hash::make($request->password)
-            ]);
-        } elseif (isset($request->password) && $request->password == null) {
+        if ($request->password_old || $request->password_old != null) {
+            if ($user->password == Hash::make($request->password_old)) {
+                $request->merge([
+                    "password" => Hash::make($request->new_password)
+                ]); 
+            }
+            
+        } elseif (isset($request->password) && ($request->password == null || $request->password == '')) {
            $request->replace($request->except('password'));
         }
         $user->update($request->all());
