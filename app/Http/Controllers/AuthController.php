@@ -35,9 +35,18 @@ class AuthController extends Controller
 
         $token = auth()->attempt($credentials);
         if ($token === false) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Unauthorized'], 403);
         }
         return $this->respondWithToken($token);
+    }
+
+    public function onlyUser ($id) {
+        try{
+             return User::find($id);
+        } catch(Exception $err) {
+            return response()->json($err->getMessage(), 500);
+        }
+       
     }
 
     public function register(Request $request)
