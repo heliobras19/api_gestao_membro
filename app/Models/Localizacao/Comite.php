@@ -11,7 +11,7 @@ class Comite extends Model
 {
     use HasFactory, Uuids;
     protected $fillable = ['nome_comite', 'bairro_id', 'id_pai', 'tipo'];
-    protected $appends = ['descTipo'];
+    protected $appends = ['descTipo', 'descPai'];
     /**
      * @var array
      */
@@ -24,6 +24,15 @@ class Comite extends Model
            4 => "Núcleo"
         ];
         return $tipo_desc[$this->tipo];
+    }
+
+    public function getDescPaiAttribute () {
+        $pai = Comite::find($this->id_pai);
+        if ($pai) {
+            return $pai->nome_comite;
+        } else {
+            return null;
+        }
     }
 
     protected static function boot()
