@@ -28,7 +28,7 @@ class MembroController extends Controller
             }
             return response()->json(['message' => 'Comitê não encontrado'], 404);
         }
-        return Membro::with('nucleo', 'orgaos', 'funcoes')->paginate(15);
+        return Membro::with('nucleo', 'orgaos', 'funcoes')->get();
     }
 
     private function rules()
