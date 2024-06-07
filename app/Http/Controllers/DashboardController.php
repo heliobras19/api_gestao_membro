@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Localizacao\Bairro;
 use App\Models\Localizacao\Comite;
+use App\Models\Localizacao\Comuna;
+use App\Models\Localizacao\Municipio;
 use App\Models\Localizacao\Provincia;
 use App\Models\Membro;
 use Illuminate\Http\Request;
@@ -41,6 +44,12 @@ $comites = Comite::with('bairro.comuna.municipio.provincia')->get();
                 $membrosProvincia[$provinciaNome][] = $membro;
             }
         }
+        $pais = [
+            "provincias" => Provincia::all()->count(),
+            "municipios" => Municipio::all()->count(),
+            "comunas" => Comuna::all()->count(),
+            "bairros" => Bairro::all()->count()
+        ];
          return $membrosProvincia;
         $comites = [
             "Setorial" => Comite::where('tipo', 1)->get()->count(),
@@ -49,7 +58,8 @@ $comites = Comite::with('bairro.comuna.municipio.provincia')->get();
             "Nucleos" => Comite::where('tipo', 4)->get()->count(),
             "total_comies" => $totalComites,
             "total_membros" => $totalMembros,
-            "membros_provincias" => $membrosProvincia
+            "membros_provincias" => $membrosProvincia,
+            $pais
         ];
         return  $comites;
     }

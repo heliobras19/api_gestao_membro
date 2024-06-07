@@ -34,7 +34,7 @@ class FuncaoController extends Controller
     public function store (Request $request) {
         try {
             $request->validate([
-                "nome_funcao" => "required|unique:orgaos"
+                "nome_funcao" => "required|unique:funcaos"
             ]);
             $funcao = Funcao::create($request->all());
             return response()->json(APIResponse::response($funcao));
@@ -43,8 +43,9 @@ class FuncaoController extends Controller
         }
     }
 
-    public function delete (Funcao $funcao) {
+    public function destroy ($id) {
+        $funcao = Funcao::find($id); 
         $funcao->delete();
-        return response(APIResponse::response(null, true), 204);
+        return response(APIResponse::response(null, true), 200);
     }
 }

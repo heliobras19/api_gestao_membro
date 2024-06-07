@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -65,15 +66,24 @@ class AuthController extends Controller
 
     public function updateUser($user, Request $request)
     {
-        $user = User::find($user);
-        if ($request->password || $request->password != null) {
-            $request->merge([
-                "password" => Hash::make($request->password)
-            ]);
-        } elseif (isset($request->password) && $request->password == null) {
-           $request->replace($request->except('password'));
+        try {
+            $user = User::find($user);
+            if ($request->password_old || $request->password_old != null) {
+                if ($user->password == Hash::make($request->password_old)) {
+                    $request->merge([
+                        "password" => Hash::make($request->new_password)
+                    ]); 
+                }
+                
+            } elseif (isset($request->password) && ($request->password == null || $request->password == '')) {
+            $request->replace($request->except('password'));
+            }
+            $user->update($request->all());
+            return response()->json([$user]);
+        } catch (Exception $th) {
+            return response()->json($th->getMessage());
         }
-        $user->update($request->all());
+        
     }
 
     public function destaivarConta(User $user)
