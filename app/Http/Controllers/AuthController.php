@@ -40,6 +40,14 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
+    public function password_verify (Request $request) {
+        $user = auth()->user();
+        if ($user->password == Hash::make($request->password)) {
+            return true;
+        } 
+        return false;
+    }
+
     public function onlyUser ($id) {
         try{
              return User::find($id);

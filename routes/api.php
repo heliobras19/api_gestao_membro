@@ -47,6 +47,7 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::get("comite_by_bairros", [\App\Http\Controllers\ComiteController::class, 'byBairros']);
     Route::put('update/me/{user}', [AuthController::class, 'updateUser']);
     Route::get('only_user/{id}', [AuthController::class, 'onlyUser']);
+    Route::post('password_verify', [AuthController::class, 'password_verify']);
 });
 
 Route::get("/ola", function () {
