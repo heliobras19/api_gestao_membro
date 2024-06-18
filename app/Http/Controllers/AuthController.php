@@ -42,10 +42,11 @@ class AuthController extends Controller
 
     public function password_verify (Request $request) {
         $user = auth()->user();
-        if ($user->password == Hash::make($request->password)) {
-            return response()->json(["success" => true]);
-        } 
-        return  response()->json(["success" => false]);;
+        $login =auth()->attempt(["email" => auth()->user()->email, "password" => $request->password]);
+         if ( $login === false ) {
+              return response()->json(["success" => false]);
+         }
+        return  response()->json(["success" => true]);
     }
 
     public function onlyUser ($id) {
