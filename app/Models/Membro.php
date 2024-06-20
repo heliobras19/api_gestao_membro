@@ -15,7 +15,8 @@ class Membro extends Model
     use HasFactory;
     protected $fillable = ['nome', 'email', 'telefone', 'sexo', 'data_nascimento', 'municipio','comuna_id',
         'comuna', 'provincia', 'bi', 'pai', 'mae', 'mae', 'ano_ingresso', 'onde_ingressou', 'numero_membro',
-        'cartao_municipe', 'comite_id', 'estrutura', 'foi_militar', 'scope', 'habilitacao'];
+        'cartao_municipe', 'comite_id', 'estrutura', 'foi_militar', 'scope', 'habilitacao' , 'bairro_residencia', 
+        'natural_de', 'nivel_academico', 'partido_anterior', 'is_quadro'];
 
 
 protected static function boot()
@@ -67,6 +68,10 @@ protected static function boot()
 
     public function linguas () {
         return $this->hasMany(Liugua::class, 'membro_id');
+    }
+
+    public function profissoes () {
+        return $this->hasMany(Profissao::class, 'membro_id');
     }
 
     public function nucleo () {
