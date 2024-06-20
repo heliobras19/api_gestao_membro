@@ -26,7 +26,7 @@ class OrgaosController extends Controller
         try {
             $request->validate([
                 'nome_orgao' => 'required|unique:orgaos',
-                'tipo' => 'required|in:1,2,3,4'
+                'tipo' => 'required|in:1,2,3,4,5'
             ]);
             $orgao = Orgao::create($request->all());
             return response()->json(APIResponse::response($orgao), 201);
