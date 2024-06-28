@@ -16,7 +16,7 @@ class Membro extends Model
     protected $fillable = ['nome', 'email', 'telefone', 'sexo', 'data_nascimento', 'municipio','comuna_id',
         'comuna', 'provincia', 'bi', 'pai', 'mae', 'mae', 'ano_ingresso', 'onde_ingressou', 'numero_membro',
         'cartao_municipe', 'comite_id', 'estrutura', 'foi_militar', 'scope', 'habilitacao' , 'bairro_residencia', 
-        'natural_de', 'nivel_academico', 'partido_anterior', 'is_quadro'];
+        'natural_de', 'nivel_academico', 'partido_anterior', 'is_quadro', 'data_emissao_bi', 'numero_cart_membro', 'data_emissao_cart_membro', 'onde_combateu'];
 
 
 protected static function boot()
