@@ -12,8 +12,11 @@ class Funcao extends Model
 
     public function getDescTipoAttribute() {
         $tipo = [
-            1 => "Deliberativa",
-            "Executiva"
+               1 => "Deliberativo",
+            "Executivo",
+            "Aconselhamento",
+            "Consultiva",
+            "Jurisdicionais"
         ];
         return $tipo[$this->tipo];
     }
