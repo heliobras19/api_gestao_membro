@@ -60,10 +60,10 @@ class MembroController extends Controller
             DB::beginTransaction();
             $data = $request->all();
             $membro = Membro::create($data);
-            $membro->orgaos()->sync($request->post('orgaos'));
-            $membro->funcoes()->sync($request->post('funcoes'));
-            $membro->linguas()->createMany($request->post('linguas'));
-            $membro->profissoes()->createMany($request->post('profissoes'));
+            if(!empty($request->post('orgaos')))  $membro->orgaos()->sync($request->post('orgaos'));
+             if(!empty($request->post('funcoes'))) $membro->funcoes()->sync($request->post('funcoes'));
+             if(!empty($request->post('linguas'))) $membro->linguas()->createMany($request->post('linguas'));
+             if(!empty($request->post('profissoes'))) $membro->profissoes()->createMany($request->post('profissoes'));
             DB::commit();
             $membro->load('orgaos', 'funcoes', 'linguas', 'profissoes');
             return response()->json(APIResponse::response($membro, true));
