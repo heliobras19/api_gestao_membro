@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $provincias = Provincia::with('municipios.comunas.bairros.comites')->get();
        // return dd($provincias);
        // return $provincias;
-       $comites = Comite::with('bairro.comuna.municipio.provincia')->get();
+       $comites = Comite::with('bairro.comuna.municipio.provincia')->whereNull('id_pai')->get();
         $membrosProvincia = [];
         $ultimos3Meses = Carbon::now()->subMonths(3);
         foreach ($comites as $comite) {
@@ -38,20 +38,21 @@ class DashboardController extends Controller
                 $membrosProvincia[$provinciaNome] = 0;
                 $membrosProvinciaUltimos3meses[$provinciaNome] = 0;
             }
-
             $membros = $comite->membrosDoNucleo($comite->id);
-            $membrosProvincia[$provinciaNome] += count($membros);
+            if (!empty($membros)) {
+                $membrosProvincia[$provinciaNome] += count($membros);
+            }
             foreach ($membros as $membro) {
                 if ($membro->created_at->isAfter($ultimos3Meses) ) {
-                    $membrosProvinciaUltimos3meses[$provinciaNome] =+ 1;
+                    $membrosProvinciaUltimos3meses[$provinciaNome] += 1;
                 }
             }
         }
 
         $membrosPorEstrutura = [
-            "jura" =>Membro::where('estrutura', 1)->get()->count(),
-            "lima" =>Membro::where('estrutura', 2)->get()->count(),
-            "partido" =>Membro::where('estrutura', 3)->get()->count(),
+            "jura" =>Membro::where('estrutura', 'JURA')->get()->count(),
+            "lima" =>Membro::where('estrutura', 'LIMA')->get()->count(),
+            "partido" =>Membro::where('estrutura', 'PARTIDO')->get()->count(),
         ];
         $pais = [
             "provincias" => Provincia::get()->count(),
