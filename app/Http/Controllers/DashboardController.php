@@ -24,6 +24,7 @@ class DashboardController extends Controller
         $totalMembros = Membro::get()->count();
         $membrosProvincia = [];
         $membrosProvinciaUltimos3meses = [];
+        $membroPorOrgamizacaoNasProvincias = [];
         $i = 0;
         $provincias = Provincia::with('municipios.comunas.bairros.comites')->get();
        // return dd($provincias);
@@ -37,12 +38,33 @@ class DashboardController extends Controller
             if (!isset($membrosProvincia[$provinciaNome])) {
                 $membrosProvincia[$provinciaNome] = 0;
                 $membrosProvinciaUltimos3meses[$provinciaNome] = 0;
+                $membroPorOrgamizacaoNasProvincias[$provinciaNome] = [
+                    'partido' => 0,
+                    'lima' => 0,
+                    'jura' => 0
+                ];
             }
             $membros = $comite->membrosDoNucleo($comite->id);
             if (!empty($membros)) {
                 $membrosProvincia[$provinciaNome] += count($membros);
             }
             foreach ($membros as $membro) {
+                switch (strtoupper($membro->estrutura)) {
+                    case 'PARTIDO':
+                       $membroPorOrgamizacaoNasProvincias[$provinciaNome]['partido'] += 1; 
+                        break;
+                    
+                    case 'LIMA':
+                       $membroPorOrgamizacaoNasProvincias[$provinciaNome]['lima'] += 1; 
+                        break;
+                    
+                    case 'JURA':
+                       $membroPorOrgamizacaoNasProvincias[$provinciaNome]['jura'] += 1; 
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
                 if ($membro->created_at->isAfter($ultimos3Meses) ) {
                     $membrosProvinciaUltimos3meses[$provinciaNome] += 1;
                 }
@@ -70,7 +92,8 @@ class DashboardController extends Controller
             "membros_provincias" => $membrosProvincia,
             "pais" => $pais,
             "membros_por_estrutura" => $membrosPorEstrutura,
-            "membros_ultimos_3_meses" => $membrosProvinciaUltimos3meses
+            "membros_ultimos_3_meses" => $membrosProvinciaUltimos3meses,
+            "membro_por_organizacao_nas_provincias" => $membroPorOrgamizacaoNasProvincias
 
         ];
         return  $comites;
