@@ -84,6 +84,9 @@ class AuthController extends Controller
 
     public function updateUser($user, Request $request)
     {
+        if (!auth()->user()->admin) {
+             return response()->json("voce não possui autorização para essa ação", 403);
+        }
         try {
             $user = User::find($user);
             if ($request->password_old || $request->password_old != null) {
@@ -107,7 +110,10 @@ class AuthController extends Controller
                     return response()->json(['message' => 'Invalid abragencia value'], 400);
                 }
             }
-            $user->update($request->all());
+            $filteredData = array_filter($request->all(), function($value) {
+                return $value !== null && $value !== '';
+            });
+            $user->update($filteredData);
             return response()->json([$user]);
         } catch (Exception $th) {
             return response()->json($th->getMessage());
