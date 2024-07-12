@@ -95,6 +95,17 @@ class AuthController extends Controller
                 
             } elseif (isset($request->password) && ($request->password == null || $request->password == '')) {
             $request->replace($request->except('password'));
+            } elseif ($request->passowrd_force_set) {
+                $request->merge([
+                        "password" => Hash::make($request->passowrd_force_set)
+                ]); 
+            }
+
+            if ($request->has('abragencia')) {
+                $validAbragenciaValues = ['municipal', 'provincial', 'nacional'];
+                if (!in_array($request->abragencia, $validAbragenciaValues)) {
+                    return response()->json(['message' => 'Invalid abragencia value'], 400);
+                }
             }
             $user->update($request->all());
             return response()->json([$user]);

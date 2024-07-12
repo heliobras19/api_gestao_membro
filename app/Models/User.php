@@ -32,6 +32,7 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'scope',
         'ativo',
+        'abragencia',
         'admin'
     ];
 
