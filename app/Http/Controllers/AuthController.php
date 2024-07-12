@@ -84,6 +84,9 @@ class AuthController extends Controller
 
     public function updateUser($user, Request $request)
     {
+        if (!auth()->user()->admin) {
+             return response()->json(["voce não possui autorização para essa ação"], 403);
+        }
         try {
             $user = User::find($user);
             if ($request->password_old || $request->password_old != null) {
