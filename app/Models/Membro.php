@@ -25,11 +25,11 @@ protected static function boot()
 
    static::addGlobalScope('municipio', function ($query) {
        $user = auth()->user();
-        if ($user->abragencia == 'municipal' && $user->admin == false){
+        if ($user->abragencia == 'MUNICIPAL' && $user->admin == false){
             $query->where('scope', $user->scope);
         }
 
-        if ($user->abragencia == 'provincial'  && $user->admin == false) {
+        if ($user->abragencia == 'PROVINCIAL'  && $user->admin == false) {
             $municipios = Municipio::where('provincia_id', $user->scope)->get('id');
             $ids = [];
             foreach ($municipios as $key => $municipio) {
@@ -42,7 +42,7 @@ protected static function boot()
     static::creating(function($query) {
         $user = auth()->user();
         $scope = $user->scope;
-        if ($user->abragencia == 'provincial') {
+        if ($user->abragencia == 'PROVINCIAL') {
             $municipio = Municipio::where('provincia_id', $user->scope)->first();
             $scope = $municipio->id;
         }
