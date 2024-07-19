@@ -38,21 +38,6 @@ class Comite extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope('municipio', function ($query) {
-        $user = auth()->user();
-            if ($user->abragencia == 'MUNICIPAL' && $user->admin == false){
-                $query->where('scope', $user->scope)->where('is_provincial', false);
-            }
-
-            if ($user->abragencia == 'PROVINCIAL'  && $user->admin == false) {
-                $municipios = Municipio::where('provincia_id', $user->scope)->get('id');
-                $ids = [];
-                foreach ($municipios as $key => $municipio) {
-                    $ids[] = $municipio->id;
-                }
-                $query->whereIn('scope', $ids);
-            } 
-        });
 
         static::creating(function($query) {
             $user = auth()->user();
