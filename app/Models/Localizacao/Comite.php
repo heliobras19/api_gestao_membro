@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Comite extends Model
 {
     use HasFactory, Uuids;
-    protected $fillable = ['nome_comite', 'bairro_id', 'id_pai', 'tipo'];
+    protected $fillable = ['nome_comite', 'bairro_id', 'id_pai', 'tipo', 'scope', 'is_provincial'];
     protected $appends = ['descTipo', 'descPai'];
     /**
      * @var array
@@ -38,8 +38,31 @@ class Comite extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope('verificar_escopo', function ($query) {
+        static::addGlobalScope('municipio', function ($query) {
+        $user = auth()->user();
+            if ($user->abragencia == 'MUNICIPAL' && $user->admin == false){
+                $query->where('scope', $user->scope)->where('is_provincial', false);
+            }
+
+            if ($user->abragencia == 'PROVINCIAL'  && $user->admin == false) {
+                $municipios = Municipio::where('provincia_id', $user->scope)->get('id');
+                $ids = [];
+                foreach ($municipios as $key => $municipio) {
+                    $ids[] = $municipio->id;
+                }
+                $query->whereIn('scope', $ids);
+            } 
+        });
+
+        static::creating(function($query) {
             $user = auth()->user();
+            $scope = $user->scope;
+            if ($user->abragencia == 'PROVINCIAL') {
+                $municipio = Municipio::where('provincia_id', $user->scope)->first();
+                $scope = $municipio->id;
+                $query->is_provincial = true;
+            }
+            $query->scope = $scope;
         });
     }
 
