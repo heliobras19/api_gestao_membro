@@ -137,6 +137,9 @@ class AuthController extends Controller
 
     public function listUser()
     {
+        if (!auth()->user()->admin) {
+            return response()->json(["msg" => "voce  não tem autorização para ver contas"], 403);
+        }
         $user = User::query();
         if (\request()->get('abrangencia')) {
             $user->where('abrangencia', \request()->get('abrangencia'));
