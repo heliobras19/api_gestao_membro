@@ -77,7 +77,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'scope' => $request->scope,
             'admin' => $request->admin,
-            'abrangencia' => $request->abrangencia ?? 'nacional'
+            'abrangencia' => $request->abrangencia ?? 'NACIONAL'
         ]);
         return response()->json($user);
     }
@@ -105,7 +105,7 @@ class AuthController extends Controller
             }
 
             if ($request->has('abragencia')) {
-                $validAbragenciaValues = ['municipal', 'provincial', 'nacional'];
+                $validAbragenciaValues = ['MUNICIPAL', 'PROVINCIAL', 'NACIONAL'];
                 if (!in_array($request->abragencia, $validAbragenciaValues)) {
                     return response()->json(['message' => 'Invalid abragencia value'], 400);
                 }
