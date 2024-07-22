@@ -19,8 +19,18 @@ class PaisController extends Controller
 
     public function pais (Request $request) {
         if($request->has('provincia_id')){
-            $provincia = Provincia::with('municipios.comunas.bairros.comites')->where('id', $request->provincia_id)->get();
-            return $provincia;
+            $provincia = Provincia::query()->with('municipios.comunas.bairros.comites')->where('id', $request->provincia_id);
+            $user = auth()->user();
+            if ($user->abragencia == 'PROVINCIAL' && $user->admin == false){
+                $provincia->where('id', $user->scope);
+            } elseif ($user->abragencia == 'PROVINCIAL'  && $user->admin == false) {
+                $municipio_scope = Municipio::with('provincia')->find($user->scope);
+                $provincia->where('id', $municipio_scope->provincia->id);
+                $provincia->whereHas('municipios', function ($query) use ($user) {
+                    $query->where('id', $user->scope);
+                });
+            }
+            return $provincia->get();
         }
         return Provincia::with('municipios.comunas.bairros.comites')->get();
     }
