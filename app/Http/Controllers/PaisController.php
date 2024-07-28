@@ -23,7 +23,7 @@ class PaisController extends Controller
             $user = auth()->user();
             if ($user->abragencia == 'PROVINCIAL' && $user->admin == false){
                 $provincia->where('id', $user->scope);
-            } elseif ($user->abragencia == 'PROVINCIAL'  && $user->admin == false) {
+            } elseif ($user->abragencia == 'MUNICIPAL'  && $user->admin == false) {
                 $municipio_scope = Municipio::with('provincia')->find($user->scope);
                 $provincia->where('id', $municipio_scope->provincia->id);
                 $provincia->whereHas('municipios', function ($query) use ($user) {
@@ -33,6 +33,13 @@ class PaisController extends Controller
             return $provincia->get();
         }
         return Provincia::with('municipios.comunas.bairros.comites')->get();
+    }
+
+    public function paisSemAbragencia(Request $request) {
+        if ($request->has('provincia_id')) {
+            return Provincia::query()->with('municipios.comunas.bairros.comites')->where('id', $request->provincia_id);
+        }
+         return Provincia::with('municipios.comunas.bairros.comites')->get();
     }
 
     public function bairros (){

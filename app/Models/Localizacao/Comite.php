@@ -49,6 +49,21 @@ class Comite extends Model
             }
             $query->scope = $scope;
         });
+
+        static::addGlobalScope('abragencia_show', function ($query) {
+            $user = auth()->user();
+            if ($user->abragencia == 'MUNICIPAL' && $user->admin == false) {
+                $query->whereHas('bairro.comuna.municipio', function ($query) use ($user) {
+                    $query->where('id', $user->scope);
+                });
+            }
+
+            if ($user->abragencia == 'PROVINCIAL' && $user->admin == false) {
+                $query->whereHas('bairro.comuna.municipio.provincia', function ($query) use ($user) {
+                    $query->where('id', $user->scope);
+                });
+            }
+        });
     }
 
     public function bairro () {
@@ -84,7 +99,7 @@ class Comite extends Model
     }
 
     public function arvore () {
-        return $this->bairro()->with('comuna.municipio.provincia');
+        return $this->bairro()->with('comuna.municipio.provincia')->get();
     }
 
     public function comiteSetorial () {
@@ -96,7 +111,7 @@ class Comite extends Model
     private function deepFind ($comite) : array {
         if ($comite->id_pai == null)
             return $this->endereco;
-        $comite = Comite::where('id', $comite->id_pai);
+        $comite = Comite::where('id', $comite->id_pai)->first();
         $this->endereco[] = $comite;
         return $this->deepFind($comite);
     }

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PaisController;
+use App\Models\Localizacao\Comite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +44,7 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::resource('funcao', \App\Http\Controllers\FuncaoController::class)->except(['create', 'edit']);
     Route::get('loc',  [\App\Http\Controllers\ComiteController::class, 'ola']);
     Route::get('pais', [\App\Http\Controllers\PaisController::class, 'pais']);
+    Route::get('pais_all', [PaisController::class, 'paisSemAbragencia']);
     Route::get('dashboard', [DashboardController::class, 'index']);
     Route::get('bairros', [\App\Http\Controllers\PaisController::class, 'bairros']);
     Route::get("comite_by_bairros", [\App\Http\Controllers\ComiteController::class, 'byBairros']);
@@ -50,8 +53,10 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::post('password_verify', [AuthController::class, 'password_verify']);
 });
 
-Route::get("/ola", function () {
-    return auth()->user();
+Route::get("/teste", function () {
+    $comite = Comite::find('bed43ccc-8fdc-11ee-a6e7-00155d280abc');
+    $setor =  $comite->comiteSetorial();
+    return $setor->arvore();
 });
 
 Route::post('register', [\App\Http\Controllers\AuthController::class, 'register']);
