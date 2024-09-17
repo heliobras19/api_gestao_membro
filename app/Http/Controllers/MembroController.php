@@ -8,6 +8,7 @@ use App\Models\Membro;
 use App\Services\APIResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class MembroController extends Controller
 {
@@ -95,6 +96,7 @@ class MembroController extends Controller
             $membro->linguas()->create($request->get('linguas'));
             return response()->json(APIResponse::response($membro));
         } catch (\Exception $exception) {
+            Log::error(APIResponse::response($exception->getMessage()));
             return response()->json(APIResponse::response($exception->getMessage(), false), 500);
         }
     }
