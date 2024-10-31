@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PaisController;
 use App\Models\Localizacao\Comite;
 use Illuminate\Http\Request;
@@ -51,6 +52,7 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::put('update/me/{user}', [AuthController::class, 'updateUser']);
     Route::get('only_user/{id}', [AuthController::class, 'onlyUser']);
     Route::post('password_verify', [AuthController::class, 'password_verify']);
+    Route::post('pagamento', [PagamentoController::class, 'store']);
 });
 
 Route::get("/teste", function () {
@@ -58,5 +60,7 @@ Route::get("/teste", function () {
     $setor =  $comite->comiteSetorial();
     return $setor->arvore();
 });
+
+
 
 Route::post('register', [\App\Http\Controllers\AuthController::class, 'register']);
