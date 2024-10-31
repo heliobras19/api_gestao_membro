@@ -78,4 +78,8 @@ protected static function boot()
     public function nucleo () {
         return $this->belongsTo(Comite::class, 'comite_id');
     }
+
+    public function quotas () {
+        return $this->hasMany(Quota::class, 'membro_id');
+    }
 }

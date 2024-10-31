@@ -52,7 +52,12 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::put('update/me/{user}', [AuthController::class, 'updateUser']);
     Route::get('only_user/{id}', [AuthController::class, 'onlyUser']);
     Route::post('password_verify', [AuthController::class, 'password_verify']);
+
+    //rotas pagamento
     Route::post('pagamento', [PagamentoController::class, 'store']);
+    Route::get('pagamento/consultar/{id}', [PagamentoController::class, 'consultarPagamento']);
+    Route::get('pagamento/membro/{id}', [PagamentoController::class, 'membroPagamento']);
+    Route::get('pagamento/membros/pesquisar', [PagamentoController::class, 'pesquisar']);
 });
 
 Route::get("/teste", function () {
