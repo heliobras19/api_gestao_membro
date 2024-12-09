@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MembroOrgao extends Model
+class MembroFuncao extends Model
 {
     use HasFactory;
-    protected $fillable = ['inicio', 'fim'];
 }

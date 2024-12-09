@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GestaoQuotasController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PaisController;
+use App\Http\Controllers\TipoQuotaController;
 use App\Models\Localizacao\Comite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -58,6 +60,13 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::get('pagamento/consultar/{id}', [PagamentoController::class, 'consultarPagamento']);
     Route::get('pagamento/membro/{id}', [PagamentoController::class, 'membroPagamento']);
     Route::get('pagamento/membros/pesquisar', [PagamentoController::class, 'pesquisar']);
+
+    //Rotas tipo quota
+    Route::resource('tipo_quota', TipoQuotaController::class);
+
+    //Rotas gestão de membros
+    Route::get('gestao_quadro', [GestaoQuotasController::class, 'index']);
+    Route::post('gestao_quadro/{id}', [GestaoQuotasController::class, 'store']);
 });
 
 Route::get("/teste", function () {

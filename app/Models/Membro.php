@@ -56,7 +56,7 @@ protected static function boot()
             'membro_orgaos',
             'membro_id',
             'orgao_id'
-        );
+        )->withPivot('inicio', 'fim');
     }
 
     public function funcoes () {
@@ -64,7 +64,7 @@ protected static function boot()
             'funcao_membros',
             'membro_id',
             'funcao_id'
-        );
+        )->withPivot('inicio', 'fim');
     }
 
     public function linguas () {
