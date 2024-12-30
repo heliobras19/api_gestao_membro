@@ -14,9 +14,9 @@ class AddCollumIntoPagamentos extends Migration
     public function up()
     {
 
-        Schema::table('pagamentos', function (Blueprint $table) {
+        /*Schema::table('pagamentos', function (Blueprint $table) {
             $table->dropColumn('tipo');
-        });
+        });*/
 
         // Adicionar a nova coluna com o relacionamento
         Schema::table('pagamentos', function (Blueprint $table) {
