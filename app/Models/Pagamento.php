@@ -14,10 +14,20 @@ class Pagamento extends Model
         'metodo_pagamento',
         'membro_id',
         'data_pagamento',
-        'processado_por'
+        'processado_por',
+        'tipo',
+        'banco_id',
     ];
 
     public function quotas () {
         return $this->hasMany(Quota::class, 'pagamento_id');
+    }
+
+    public function banco () {
+        return $this->belongsTo(Pagamento::class, 'banco_id');
+    }
+
+    public function tipo () {
+        return $this->belongsTo(TipoQuota::class, 'banco_id');
     }
 }
