@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BancosAtuorizadosController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GestaoQuotasController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PaisController;
+use App\Http\Controllers\QuotasRelatorio;
 use App\Http\Controllers\TipoQuotaController;
 use App\Models\Localizacao\Comite;
 use Illuminate\Http\Request;
@@ -67,6 +69,12 @@ Route::group(['middleware' => 'api'], function ($router) {
     //Rotas gestão de membros
     Route::get('gestao_quadro', [GestaoQuotasController::class, 'index']);
     Route::post('gestao_quadro/{id}', [GestaoQuotasController::class, 'store']);
+
+    //Rotas bancos
+    Route::resource('bancos_autorizados', BancosAtuorizadosController::class);
+
+    //Rota relatorio quotas
+    Route::get('quotas/devedores', [QuotasRelatorio::class, 'devedores']);
 });
 
 Route::get("/teste", function () {
