@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GestaoQuotasController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PaisController;
+use App\Http\Controllers\QuotaController;
 use App\Http\Controllers\QuotasRelatorio;
 use App\Http\Controllers\TipoQuotaController;
 use App\Models\Localizacao\Comite;
@@ -37,7 +38,7 @@ Route::group([
     Route::post('me', [\App\Http\Controllers\AuthController::class, 'me']);
     Route::put('update/{user}', [\App\Http\Controllers\AuthController::class, 'updateUser']);
     Route::get('user/{user}', [\App\Http\Controllers\AuthController::class, 'ativarConta']);
-    Route::put('desativar/{user}', [\App\Http\Controllers\AuthController::class, 'destaivarConta']);
+    Route::put('desativar/{user}', [\App\Http\Controllers\AuthController::class, 'desativarConta']);
     Route::get('users', [\App\Http\Controllers\AuthController::class, 'listUser']);
 });
 
@@ -75,6 +76,8 @@ Route::group(['middleware' => 'api'], function ($router) {
 
     //Rota relatorio quotas
     Route::get('quotas/devedores', [QuotasRelatorio::class, 'devedores']);
+
+    Route::get('quotas/comitas_setorial', [QuotaController::class, 'setoriais']);
 });
 
 Route::get("/teste", function () {

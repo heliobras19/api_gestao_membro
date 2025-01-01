@@ -86,15 +86,15 @@ class PagamentoController extends Controller
         $extraordinario_id = 0;
         $doacao_id = 0;
         foreach ($tipo_quotas as $key => $quota) {
-            if ($quota->tipo_quota == "Ordinario") {
+            if ($quota->cod_quota == 1) {
                 $ordinario_id = $quota->id;
             }
 
-            if ($quota->tipo_quota == "Doação") {
+            if ($quota->cod_quota == 2) {
                 $doacao_id = $quota->id;
             }
 
-            if ($quota->tipo_quota == "Extraordinario") {
+            if ($quota->cod_quota == 3) {
                 $extraordinario_id = $quota->id;
             }
         }

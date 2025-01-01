@@ -121,7 +121,7 @@ class AuthController extends Controller
         
     }
 
-    public function destaivarConta(User $user)
+    public function desativarConta(User $user)
     {
         $user->ativo = false;
         $user->save();
