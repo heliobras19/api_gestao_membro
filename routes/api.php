@@ -37,7 +37,7 @@ Route::group([
     Route::post('refresh', [\App\Http\Controllers\AuthController::class, 'refresh']);
     Route::post('me', [\App\Http\Controllers\AuthController::class, 'me']);
     Route::put('update/{user}', [\App\Http\Controllers\AuthController::class, 'updateUser']);
-    Route::get('user/{user}', [\App\Http\Controllers\AuthController::class, 'ativarConta']);
+    Route::put('user/{user}', [\App\Http\Controllers\AuthController::class, 'ativarConta']);
     Route::put('desativar/{user}', [\App\Http\Controllers\AuthController::class, 'desativarConta']);
     Route::get('users', [\App\Http\Controllers\AuthController::class, 'listUser']);
 });
