@@ -16,7 +16,9 @@ class Membro extends Model
     protected $fillable = ['nome', 'email', 'telefone', 'sexo', 'data_nascimento', 'municipio','comuna_id',
         'comuna', 'provincia', 'bi', 'pai', 'mae', 'mae', 'ano_ingresso', 'onde_ingressou', 'numero_membro',
         'cartao_municipe', 'comite_id', 'estrutura', 'foi_militar', 'scope', 'habilitacao' , 'bairro_residencia', 
-        'natural_de', 'nivel_academico', 'is_provincial', 'partido_anterior', 'is_quadro', 'data_emissao_bi', 'numero_cart_membro', 'formacoes_politicas', 'data_emis_cart_municipe', 'data_emissao_cart_membro', 'onde_combateu'];
+        'natural_de', 'nivel_academico', 'is_provincial', 'partido_anterior', 'is_quadro', 'data_emissao_bi',
+        'numero_cart_membro', 'formacoes_politicas', 'data_emis_cart_municipe', 'data_emissao_cart_membro',
+        'onde_combateu', 'quota_id'];
 
 
 protected static function boot()
@@ -25,11 +27,11 @@ protected static function boot()
 
    static::addGlobalScope('municipio', function ($query) {
        $user = auth()->user();
-        if ($user->abragencia == 'MUNICIPAL' && $user->admin == false){
+        if (strtoupper($user->abragencia) == 'MUNICIPAL' && $user->admin == false){
             $query->where('scope', $user->scope)->where('is_provincial', false);
         }
 
-        if ($user->abragencia == 'PROVINCIAL'  && $user->admin == false) {
+        if (strtoupper($user->abragencia) == 'PROVINCIAL'  && $user->admin == false) {
             $municipios = Municipio::where('provincia_id', $user->scope)->get('id');
             $ids = [];
             foreach ($municipios as $key => $municipio) {
