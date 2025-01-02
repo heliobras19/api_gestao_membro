@@ -89,7 +89,8 @@ class MembroController extends Controller
         try {
             $membro = Membro::find($id);
             $membro->update($request->all());
-            $membro->linguas()->create($request->get('linguas'));
+            if(!empty($request->input('linguas'))) $membro->linguas()->createMany($request->input('linguas'));
+            if(!empty($request->input('profissoes'))) $membro->profissoes()->createMany($request->input('profissoes'));
             return response()->json(APIResponse::response($membro));
         } catch (\Exception $exception) {
             Log::error(APIResponse::response($exception->getMessage()));
