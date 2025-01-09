@@ -115,4 +115,19 @@ class Comite extends Model
         $this->endereco[] = $comite;
         return $this->deepFind($comite);
     }
+
+   /* public function comiteSetorial() {
+    // Busca o comitê raiz (comite setorial)
+    return $this->findSetorial($this);
+    }
+
+    private function findSetorial($comite) {
+        // Se não tem pai, este é o comitê setorial
+        if ($comite->id_pai == null) {
+            return $comite;
+        }
+        // Continua subindo na hierarquia para encontrar o setorial
+        return Comite::where('id', $comite->id_pai)->first()->findSetorial();
+    }*/
+
 }
