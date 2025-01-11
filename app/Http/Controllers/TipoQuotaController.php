@@ -27,6 +27,10 @@ class TipoQuotaController extends Controller
         }
     }
 
+    public function show( $id){
+        return TipoQuota::findOrFail($id);
+    }
+
     public function update(Request $request, $id) {
         try {
             $request->validate([
@@ -40,8 +44,13 @@ class TipoQuotaController extends Controller
         }
     }
 
-    public function destroy(TipoQuota $tipoQuota) {
-        $tipoQuota->delete();
-        return response()->json(null, 204);
+    public function destroy($id) {
+       try {
+            $tipoQuota = TipoQuota::FindOrFail($id);
+            $tipoQuota->delete();
+            return response()->json(["success" => true], 200);
+       } catch (\Throwable $th) {
+            return response()->json(["msg" => $th->getMessage()], 400);
+       } 
     }
 }

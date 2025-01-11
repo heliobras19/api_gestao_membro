@@ -11,7 +11,7 @@ class TipoQuota extends Model
     protected $fillable = ['tipo_quota', 'montante', 'cod_quota'];
     public $appends = ['desc_quota'];
     public function getDescQuotaAttribute() {
-        $tipos= [
+        $tipos = [
             1 => 'Ordinário',
             "Extraordinario",
             "Doações"

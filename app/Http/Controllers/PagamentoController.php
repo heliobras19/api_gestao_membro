@@ -106,35 +106,32 @@ class PagamentoController extends Controller
             "membro_id" => $id,
             "ano" => $request->ano,
             "tipo" => $extraordinario_id
-        ])->orderBy('mes')->pluck('valor')->toArray();
-      
-        $quotas_doações = Quota::where([
+        ])->orderBy('mes')->pluck('valor', 'mes');
+        $quotas_doacoes = Quota::where([
             "membro_id" => $id,
             "ano" => $request->ano,
             "tipo" => $doacao_id
         ])->orderBy('mes')->pluck('valor', 'mes');
-
-        return $quotas_doações;
         $situacao_ordinaria = [];
         $situacao_extraordinaria = [];    
         $situacao_doacao = [];
-        foreach ([1,2,3,4,5,6,7,8,9,10,11,12] as $key => $value) {
-            if (in_array($value, $quotas_ordinarias)) {
-                 $situacao_ordinaria[$value] = "Pago";
+        foreach ([1,2,3,4,5,6,7,8,9,10,11,12] as $key => $mes) {
+            if (in_array($mes, $quotas_ordinarias)) {
+                 $situacao_ordinaria[$mes] = "Pago";
             }else {
-                $situacao_ordinaria[$value] = "Não pago";
+                $situacao_ordinaria[$mes] = "Não pago";
             }
 
-            if (in_array($value, $quotas_extraordinarias)) {
-                $situacao_extraordinaria[$value] = "Pago";
+            if (isset($quotas_extraordinarias[$mes])) {
+                $situacao_extraordinaria[$mes] = $quotas_extraordinarias[$mes];
             }else {
-                $situacao_extraordinaria[$value] = "-";
+                $situacao_extraordinaria[$mes] = "-";
             }
 
-            if (in_array($value, $quotas_doações)) {
-                $situacao_doacao[$value] = "Pago";
+            if (isset($quotas_doacoes[$mes])) {
+                $situacao_doacao[$mes] = $quotas_doacoes[$mes];
             }else {
-                $situacao_doacao[$value] = "-";
+                $situacao_doacao[$mes] = "-";
             }
         }
         return response()->json([
