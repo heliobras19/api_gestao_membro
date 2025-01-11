@@ -54,6 +54,18 @@ class BancosAtuorizadosController extends Controller
         }
     }
 
+    public function show($id) {
+        try {
+            $banco = BancosAtuorizados::findOrFail($id);
+            return $banco;
+        } catch (\Throwable $th) {
+            return response()->json([
+                'msg' => $th->getMessage(),
+                'success' => false,
+            ]);
+        }
+    }
+
     public function destroy($id) {
         try {
             $banco = BancosAtuorizados::findOrFail($id);
