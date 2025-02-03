@@ -20,13 +20,13 @@ class PagamentoController extends Controller
         try {
             $request->validate([
                 'tipo' => 'required',
-                'banco_id' => 'required',
+                //'banco_id' => 'required',
                 'valor' => 'nullable|regex:/^\d+(\.\d{1,2})?$/',
                 'ano' => 'required',
                 'meses' => 'required|array',
                 'meses.*' => 'integer',
                 'data_pagamento' => 'required',
-                'referencia_pagamento' => 'required',
+                //'referencia_pagamento' => 'required',
                 'obs' => 'required',
                 'metodo_pagamento' => 'required',
                 'membro_id' => 'required',
