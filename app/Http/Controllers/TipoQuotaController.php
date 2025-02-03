@@ -8,8 +8,14 @@ use Illuminate\Http\Request;
 
 class TipoQuotaController extends Controller
 {
-    public function index() {
-        $tipos_quotas = TipoQuota::where('cod_quota', 1)->get();
+    public function index(Request $request) {
+         $nao_ordinarias = false;
+        if ($request->has('nao_ordinarias') && $request->nao_ordinarias == true) {
+            $nao_ordinarias = true;
+        }
+        $tipos_quotas = $nao_ordinarias ? 
+                        TipoQuota::where('cod_quota', '!=', 1)->get() : 
+                        TipoQuota::where('cod_quota', 1)->get();
         return response()->json([$tipos_quotas]);
     }
 
