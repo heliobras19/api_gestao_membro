@@ -78,6 +78,9 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::get('quotas/devedores', [QuotasRelatorio::class, 'devedores']);
 
     Route::get('quotas/comitas_setorial', [QuotaController::class, 'setoriais']);
+
+    //Rota 
+    Route::post('pais/{estrutura}', [PaisController::class, 'paisStore']);
 });
 
 Route::get("/teste", function () {

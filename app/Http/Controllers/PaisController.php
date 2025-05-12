@@ -101,4 +101,21 @@ class PaisController extends Controller
         echo "Provincia {$provincia_nome} importada com sucesso !!!, <a href='/excel'>importar outra</a>";
         return;
     }
+
+    public function paisStore(Request $request, $estrutura) {
+        if ($estrutura == "municipio") {
+            $municipio = Municipio::create($request);
+            return $municipio;
+        }
+
+        if ($estrutura == "comuna") {
+            $municipio = Comuna::create($request);
+            return $municipio;
+        }
+
+        if ($estrutura == "bairro") {
+            $bairro = Bairro::create($request);
+            return $bairro;
+        }
+    }
 }
