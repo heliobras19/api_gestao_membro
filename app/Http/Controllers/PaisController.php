@@ -103,9 +103,12 @@ class PaisController extends Controller
     }
 
     public function paisStore(Request $request, $estrutura) {
+      //  return $request->json()->all();
+
         if ($estrutura == "municipio") {
+            
             $municipio = Municipio::create([
-                'nome' => $request->nome_municipio,
+                'nome_municipio' => $request->nome_municipio,
                 'provincia_id' => $request->provincia_id
             ]);
             return $municipio;
@@ -113,7 +116,7 @@ class PaisController extends Controller
 
         if ($estrutura == "comuna") {
             $comuna = Comuna::create([
-                'nome' => $request->nome_comuna,
+                'nome_comuna' => $request->nome_comuna,
                 'municipio_id' => $request->municipio_id
             ]);
             return $comuna;
@@ -121,7 +124,7 @@ class PaisController extends Controller
 
         if ($estrutura == "bairro") {
             $bairro = Bairro::create([
-                'nome' => $request->nome_bairro,
+                'nome_bairro' => $request->nome_bairro,
                 'comuna_id' => $request->comuna_id
             ]);
             return $bairro;
