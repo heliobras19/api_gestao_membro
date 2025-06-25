@@ -1,39 +1,38 @@
-# Dockerfile para Render
-FROM richarvey/nginx-php-fpm:3.1.6
+# Usar imagem oficial do PHP com Apache
+FROM php:8.2-apache
 
-# Copiar código da aplicação
-COPY . .
+# Ativar o mod_rewrite (Laravel precisa para rotas bonitas)
+RUN a2enmod rewrite
 
-# Script de configuração Laravel
-COPY conf/laravel.conf /etc/nginx/sites-available/default.conf
+# Instalar dependências PHP para Laravel
+RUN apt-get update && apt-get install -y \
+    git unzip zip curl libzip-dev libonig-dev libxml2-dev \
+    && docker-php-ext-install pdo pdo_mysql zip
 
-# Definir variáveis de ambiente
-ENV SKIP_COMPOSER 1
-ENV WEBROOT /var/www/html/public
-ENV PHP_ERRORS_STDERR 1
-ENV RUN_SCRIPTS 1
-ENV REAL_IP_HEADER 1
+# Instalar o Composer (copiando da imagem oficial)
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Laravel specific
-ENV APP_ENV production
-ENV APP_DEBUG false
-ENV LOG_CHANNEL stderr
+# Copiar configuração customizada do Apache
+COPY conf/laravel.conf /etc/apache2/sites-available/000-default.conf
 
-# Allow composer to run as root
-ENV COMPOSER_ALLOW_SUPERUSER 1
+# Copiar o código da aplicação
+COPY . /var/www/html
 
 # Definir diretório de trabalho
 WORKDIR /var/www/html
 
-# Instalar dependências
+# Instalar dependências Laravel
 RUN composer install --optimize-autoloader --no-dev --no-interaction
 
-# Compilar assets (se usares Vite/Mix)
-#RUN npm ci && npm run build
+# Corrigir permissões
+RUN mkdir -p storage/logs storage/framework/{cache,sessions,views} bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
-# Configurar permissões
-RUN chown -Rf www-data.www-data /var/www/html/storage/ /var/www/html/bootstrap/cache/
-RUN chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache
+# Definir variáveis de ambiente do Laravel
+ENV APP_ENV=production
+ENV APP_DEBUG=false
+ENV LOG_CHANNEL=stderr
 
-# Expor porta
+# Expor porta 80 (Apache)
 EXPOSE 80
