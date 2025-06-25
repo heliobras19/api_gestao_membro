@@ -29,7 +29,7 @@ WORKDIR /var/www/html
 RUN composer install --optimize-autoloader --no-dev --no-interaction
 
 # Compilar assets (se usares Vite/Mix)
-RUN npm ci && npm run build
+#RUN npm ci && npm run build
 
 # Configurar permissões
 RUN chown -Rf www-data.www-data /var/www/html/storage/ /var/www/html/bootstrap/cache/
