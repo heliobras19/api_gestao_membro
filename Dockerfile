@@ -9,8 +9,9 @@ RUN apt-get update && apt-get install -y \
     git unzip zip curl libzip-dev libonig-dev libxml2-dev libcurl4-openssl-dev \
     && docker-php-ext-install pdo pdo_mysql zip mbstring xml curl
 
-# Instalar o Composer (copiando da imagem oficial)
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Instalar o Composer corretamente
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 
 # Copiar configuração customizada do Apache
 COPY conf/laravel.conf /etc/apache2/sites-available/000-default.conf
