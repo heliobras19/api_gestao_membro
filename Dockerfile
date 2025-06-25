@@ -6,8 +6,8 @@ RUN a2enmod rewrite
 
 # Instalar dependências PHP para Laravel
 RUN apt-get update && apt-get install -y \
-    git unzip zip curl libzip-dev libonig-dev libxml2-dev \
-    && docker-php-ext-install pdo pdo_mysql zip
+    git unzip zip curl libzip-dev libonig-dev libxml2-dev libcurl4-openssl-dev \
+    && docker-php-ext-install pdo pdo_mysql zip mbstring xml curl
 
 # Instalar o Composer (copiando da imagem oficial)
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
